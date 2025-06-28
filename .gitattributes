@@ -1,0 +1,14 @@
+* eol=lf text=auto
+
+.editorconfig export-ignore
+.gitattributes export-ignore
+.github export-ignore
+.gitignore export-ignore
+CHANGELOG.md export-ignore
+composer-dependency-analyser.php
+composer-dependency-analyser.php export-ignore
+phpstan.neon.dist export-ignore
+phpunit.xml.dist export-ignore
+pint.json export-ignore
+rector.php export-ignore
+tests export-ignore

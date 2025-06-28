@@ -1,0 +1,9 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    uses: hosmelq/.github/.github/workflows/php-ci.yml@main
+    with:
+      php-version: '8.2'

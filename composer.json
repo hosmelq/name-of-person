@@ -1,0 +1,74 @@
+{
+    "name": "hosmelq/name-of-person",
+    "description": "Presenting names of people in full, familiar, abbreviated, and initialized forms",
+    "license": "MIT",
+    "type": "library",
+    "version": "0.1.0",
+    "keywords": [
+        "hosmelq",
+        "laravel",
+        "name",
+        "person",
+        "name-of-person"
+    ],
+    "authors": [
+        {
+            "name": "Hosmel Quintana",
+            "email": "hosmelq@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "driftingly/rector-laravel": "^2.0.5",
+        "ergebnis/composer-normalize": "^2.47",
+        "larastan/larastan": "^3.5.0",
+        "laravel/pint": "^1.22.1",
+        "orchestra/testbench": "^9.14",
+        "pestphp/pest": "^3.8.2",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan-deprecation-rules": "^2.0.3",
+        "phpstan/phpstan-strict-rules": "^2.0.4",
+        "rector/rector": "^2.1.0",
+        "rector/type-perfect": "^2.1.0",
+        "shipmonk/composer-dependency-analyser": "^1.8.3",
+        "spaze/phpstan-disallowed-calls": "^4.5.0",
+        "thecodingmachine/phpstan-safe-rule": "^1.4.1",
+        "ticketswap/phpstan-error-formatter": "^1.1.5",
+        "tomasvotruba/type-coverage": "^2.0.2"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "HosmelQ\\NameOfPerson\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HosmelQ\\NameOfPerson\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse --configuration=phpstan.neon.dist --memory-limit=4G",
+        "pint": "pint",
+        "rector": "rector",
+        "test": "pest"
+    },
+    "scripts-descriptions": {
+        "phpstan": "Run PHPStan static analysis.",
+        "pint": "Format code using Laravel Pint.",
+        "rector": "Run Rector automated refactoring.",
+        "test": "Run the test suite using Pest."
+    },
+    "$schema": "https://getcomposer.org/schema.json"
+}
