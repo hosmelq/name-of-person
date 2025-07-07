@@ -3,7 +3,6 @@
     "description": "Presenting names of people in full, familiar, abbreviated, and initialized forms",
     "license": "MIT",
     "type": "library",
-    "version": "0.1.0",
     "keywords": [
         "hosmelq",
         "laravel",
