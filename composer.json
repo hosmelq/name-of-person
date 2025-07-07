@@ -18,7 +18,8 @@
         }
     ],
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "thecodingmachine/safe": "^3.3"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.0.5",
