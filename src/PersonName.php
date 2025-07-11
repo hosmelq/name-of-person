@@ -59,7 +59,9 @@ class PersonName implements JsonSerializable, Stringable
      */
     public function __construct(string $firstName, null|string $lastName = null)
     {
-        throw_if(mb_trim($firstName) === '', new InvalidArgumentException('First name is required.'));
+        if (mb_trim($firstName) === '') {
+            throw new InvalidArgumentException('First name is required.');
+        }
 
         $this->first = mb_trim($firstName);
         $this->last = (! is_null($lastName) && mb_trim($lastName) !== '') ? mb_trim($lastName) : null;
@@ -157,10 +159,9 @@ class PersonName implements JsonSerializable, Stringable
     {
         $allowedMethods = ['full', 'first', 'last', 'abbreviated', 'sorted', 'initials'];
 
-        throw_unless(
-            in_array($method, $allowedMethods, true),
-            new InvalidArgumentException('Please provide a valid method')
-        );
+        if (! in_array($method, $allowedMethods, true)) {
+            throw new InvalidArgumentException('Please provide a valid method');
+        }
 
         $name = match ($method) {
             'abbreviated' => $this->abbreviated(),
