@@ -16,7 +16,7 @@ class PersonNameCast implements Castable
      *
      * @param string[] $arguments
      *
-     * @return CastsAttributes<null|PersonName, null|string|PersonName>
+     * @return CastsAttributes<null|PersonName, null|PersonName|string>
      */
     public static function castUsing(array $arguments): CastsAttributes // @phpstan-ignore-line - @see https://github.com/laravel/framework/pull/56177
     {
@@ -48,7 +48,7 @@ class PersonNameCast implements Castable
             /**
              * Prepare the PersonName for database storage.
              *
-             * @return non-empty-array<string, string|null>
+             * @return non-empty-array<string, null|string>
              */
             public function set(Model $model, string $key, mixed $value, array $attributes): array
             {

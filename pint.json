@@ -30,6 +30,11 @@
     "fully_qualified_strict_types": {
       "import_symbols": true
     },
+    "general_phpdoc_tag_rename": {
+      "replacements": {
+        "inheritdocs": "inheritDoc"
+      }
+    },
     "global_namespace_import": true,
     "lambda_not_used_import": true,
     "lowercase_keywords": true,
@@ -80,9 +85,29 @@
     },
     "ordered_interfaces": true,
     "ordered_traits": true,
+    "phpdoc_add_missing_param_annotation": true,
     "phpdoc_align": {
-      "align": "left"
+      "align": "left",
+      "spacing": 1
     },
+    "phpdoc_indent": true,
+    "phpdoc_inline_tag_normalizer": true,
+    "phpdoc_line_span": true,
+    "phpdoc_list_type": true,
+    "phpdoc_no_useless_inheritdoc": true,
+    "phpdoc_order": {
+      "order": ["param", "return", "throws"]
+    },
+    "phpdoc_param_order": true,
+    "phpdoc_scalar": true,
+    "phpdoc_separation": true,
+    "phpdoc_summary": true,
+    "phpdoc_tag_casing": true,
+    "phpdoc_trim": true,
+    "phpdoc_trim_consecutive_blank_line_separation": true,
+    "phpdoc_types_order": true,
+    "phpdoc_var_annotation_correct_order": true,
+    "phpdoc_var_without_name": true,
     "protected_to_private": true,
     "self_accessor": true,
     "self_static_accessor": true,
