@@ -4,6 +4,9 @@ on: [push, pull_request]
 
 jobs:
   ci:
+    strategy:
+      matrix:
+        php-version: ['8.2', '8.3', '8.4', '8.5']
     uses: hosmelq/.github/.github/workflows/php-ci.yml@main
     with:
-      php-version: '8.2'
+      php-version: ${{ matrix.php-version }}
