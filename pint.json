@@ -54,6 +54,9 @@
     "no_useless_else": true,
     "no_whitespace_before_comma_in_array": true,
     "not_operator_with_successor_space": true,
+    "nullable_type_declaration": {
+      "syntax": "union"
+    },
     "object_operator_without_whitespace": true,
     "ordered_class_elements": {
       "order": [
@@ -77,7 +80,7 @@
         "method_private",
         "magic"
       ],
-      "sort_algorithm": "none"
+      "sort_algorithm": "alpha"
     },
     "ordered_imports": {
       "imports_order": ["const", "function", "class"],
@@ -85,6 +88,7 @@
     },
     "ordered_interfaces": true,
     "ordered_traits": true,
+    "ordered_types": true,
     "phpdoc_add_missing_param_annotation": true,
     "phpdoc_align": {
       "align": "left",
@@ -93,7 +97,6 @@
     "phpdoc_indent": true,
     "phpdoc_inline_tag_normalizer": true,
     "phpdoc_line_span": true,
-    "phpdoc_list_type": true,
     "phpdoc_no_useless_inheritdoc": true,
     "phpdoc_order": {
       "order": ["param", "return", "throws"]
