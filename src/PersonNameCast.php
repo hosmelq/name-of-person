@@ -8,31 +8,42 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use Override;
 
 class PersonNameCast implements Castable
 {
     /**
      * Get the caster class to use when casting from / to this cast target.
      *
-     * @param string[] $arguments
+     * @param array<string> $arguments
      *
      * @return CastsAttributes<null|PersonName, null|PersonName|string>
      */
-    public static function castUsing(array $arguments): CastsAttributes // @phpstan-ignore-line - @see https://github.com/laravel/framework/pull/56177
+    #[Override]
+    public static function castUsing(array $arguments): CastsAttributes
     {
         /** @var array{null|string, null|string} $config */
         $config = array_pad(array_map(trim(...), array_values($arguments)), 2, null);
 
-        return new class ($config[0] ?? 'first_name', $config[1] ?? 'last_name') implements CastsAttributes {
-            public function __construct(protected string $firstNameColumn, protected string $lastNameColumn)
-            {
-            }
+        return new class (
+            $config[0] ?? 'first_name',
+            $config[1] ?? 'last_name',
+        ) implements CastsAttributes {
+            public function __construct(
+                protected string $firstNameColumn,
+                protected string $lastNameColumn,
+            ) {}
 
             /**
              * Cast the database value to PersonName.
              */
-            public function get(Model $model, string $key, mixed $value, array $attributes): null|PersonName
-            {
+            #[Override]
+            public function get(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): null|PersonName {
                 /** @var null|string $firstName */
                 $firstName = $attributes[$this->firstNameColumn] ?? null;
                 /** @var null|string $lastName */
@@ -50,6 +61,7 @@ class PersonNameCast implements Castable
              *
              * @return non-empty-array<string, null|string>
              */
+            #[Override]
             public function set(Model $model, string $key, mixed $value, array $attributes): array
             {
                 if (is_null($value)) {
@@ -85,8 +97,8 @@ class PersonNameCast implements Castable
                 throw new InvalidArgumentException(
                     sprintf(
                         'Value must be null, string, or PersonName instance, got: %s',
-                        get_debug_type($value)
-                    )
+                        get_debug_type($value),
+                    ),
                 );
             }
         };

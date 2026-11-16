@@ -10,6 +10,7 @@ use function Safe\preg_split;
 
 use InvalidArgumentException;
 use JsonSerializable;
+use Override;
 use Stringable;
 
 class PersonName implements JsonSerializable, Stringable
@@ -64,7 +65,9 @@ class PersonName implements JsonSerializable, Stringable
         }
 
         $this->first = mb_trim($firstName);
-        $this->last = (! is_null($lastName) && mb_trim($lastName) !== '') ? mb_trim($lastName) : null;
+        $this->last = (! is_null($lastName) && mb_trim($lastName) !== '')
+            ? mb_trim($lastName)
+            : null;
     }
 
     /**
@@ -77,7 +80,12 @@ class PersonName implements JsonSerializable, Stringable
         }
 
         /** @var array{string, null|string} $parts */
-        $parts = preg_split('/\s+/u', preg_replace('/\s+/u', ' ', mb_trim($fullName)), 2, PREG_SPLIT_NO_EMPTY);
+        $parts = preg_split(
+            '/\s+/u',
+            preg_replace('/\s+/u', ' ', mb_trim($fullName)),
+            2,
+            PREG_SPLIT_NO_EMPTY,
+        );
 
         return new self($parts[0], $parts[1] ?? null);
     }
@@ -137,15 +145,22 @@ class PersonName implements JsonSerializable, Stringable
     }
 
     /**
+     * {@inheritDoc}
+     */
+    #[Override]
+    public function jsonSerialize(): string
+    {
+        return $this->full();
+    }
+
+    /**
      * Returns a mentionable version of the familiar name.
      */
     public function mentionable(): string
     {
         if (is_null($this->mentionable)) {
             $familiar = $this->familiar();
-
             $withoutDot = is_null($this->last) ? $familiar : mb_substr($familiar, 0, -1);
-
             $this->mentionable = mb_strtolower(str_replace(' ', '', $withoutDot));
         }
 
@@ -171,7 +186,6 @@ class PersonName implements JsonSerializable, Stringable
             'last' => $this->last ?? $this->first,
             'sorted' => $this->sorted(),
         };
-
         $suffix = mb_strtolower(mb_substr($name, -1)) === 's' ? "'" : "'s";
 
         return $name.$suffix;
@@ -190,14 +204,7 @@ class PersonName implements JsonSerializable, Stringable
     /**
      * {@inheritDoc}
      */
-    public function jsonSerialize(): string
-    {
-        return $this->full();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    #[Override]
     public function __toString(): string
     {
         return $this->full();

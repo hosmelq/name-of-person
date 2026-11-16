@@ -1,9 +1,95 @@
-name: CI
+name: Continuous integration
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+permissions:
+  contents: read
 
 jobs:
-  ci:
-    uses: hosmelq/.github/.github/workflows/php-ci.yml@main
-    with:
-      php-version: '8.2'
+  quality:
+    name: Quality checks
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: hosmelq/.github/.github/actions/php-setup@32f4a95b53649f1634b195193a61bb56a6b26d50 # main
+        with:
+          php-tools: cs2pr
+          php-version: '8.4'
+        env:
+          fail-fast: true
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Check composer
+        run: composer normalize --dry-run
+
+      - name: Check code quality
+        run: vendor/bin/rector --ansi --dry-run
+
+      - name: Check code style
+        run: vendor/bin/ecs check
+
+      - name: Check static code
+        run: composer phpstan
+
+      - name: Check unused composer dependencies
+        run: vendor/bin/composer-dependency-analyser
+
+  tests:
+    name: PHP ${{ matrix.php }} (${{ matrix.dependencies }})
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        dependencies: [prefer-stable]
+        include:
+          - dependencies: prefer-lowest
+            php: '8.4'
+        php: ['8.4', '8.5', '8.6']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP
+        uses: hosmelq/.github/.github/actions/php-setup@32f4a95b53649f1634b195193a61bb56a6b26d50 # main
+        with:
+          php-tools: cs2pr
+          php-version: ${{ matrix.php }}
+        env:
+          fail-fast: true
+
+      - name: Install composer dependencies
+        env:
+          DEPENDENCIES: ${{ matrix.dependencies }}
+        run: composer update --no-interaction --no-progress --prefer-dist --prefer-stable --"$DEPENDENCIES"
+
+      - name: Installed dependencies
+        run: composer show -D
+
+      - name: Set up problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run tests
+        run: composer test

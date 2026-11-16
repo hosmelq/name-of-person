@@ -3,14 +3,6 @@
 declare(strict_types=1);
 
 arch()->preset()->php();
-arch()->preset()->laravel();
-arch()->preset()->security()->ignoring('assert');
+arch()->preset()->security();
 
-arch('annotations')
-    ->expect('HosmelQ\NameOfPerson')
-    ->toHaveMethodsDocumented()
-    ->toHavePropertiesDocumented();
-
-arch('strict types')
-    ->expect('HosmelQ\NameOfPerson')
-    ->toUseStrictTypes();
+arch('strict types')->expect('HosmelQ\NameOfPerson')->toUseStrictTypes();

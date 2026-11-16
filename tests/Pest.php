@@ -2,4 +2,4 @@
 
 declare(strict_types=1);
 
-pest()->in('Unit');
+pest()->in(__DIR__);

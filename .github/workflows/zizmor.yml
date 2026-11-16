@@ -1,0 +1,65 @@
+name: GitHub Actions security analysis
+
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    types: [opened, ready_for_review, reopened, synchronize]
+  push:
+    branches: [main]
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    if: github.event_name != 'pull_request_target' || !github.event.pull_request.draft
+
+    name: Run zizmor
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout trusted configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          path: trusted
+          persist-credentials: false
+
+      - name: Checkout pull request
+        if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          allow-unsafe-pr-checkout: true
+          path: pull-request
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Run zizmor on pull request
+        if: github.event_name == 'pull_request_target'
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          advanced-security: false
+          annotations: true
+          collect: all
+          config: trusted/.github/zizmor.yml
+          inputs: pull-request/.github
+          min-severity: medium
+          persona: auditor
+          version: 1.32.0
+
+      - name: Run zizmor on main
+        if: github.event_name == 'push'
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          advanced-security: false
+          annotations: true
+          collect: all
+          config: trusted/.github/zizmor.yml
+          inputs: trusted/.github
+          min-severity: medium
+          persona: auditor
+          version: 1.32.0

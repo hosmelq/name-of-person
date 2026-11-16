@@ -1,13 +1,17 @@
 {
     "name": "hosmelq/name-of-person",
-    "description": "Presenting names of people in full, familiar, abbreviated, and initialized forms",
+    "description": "Format people's names in PHP, from full and familiar names to initials and possessives.",
     "license": "MIT",
-    "type": "library",
     "keywords": [
+        "eloquent",
+        "initials",
         "laravel",
         "name",
+        "name-formatter",
+        "name-of-person",
         "person",
-        "name-of-person"
+        "person-name",
+        "php"
     ],
     "authors": [
         {
@@ -16,25 +20,17 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "thecodingmachine/safe": "^3.3"
+        "php": "^8.4",
+        "thecodingmachine/safe": "^3.4.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.47",
-        "larastan/larastan": "^3.5.0",
-        "laravel/pint": "^1.22.1",
-        "orchestra/testbench": "^9.14",
-        "pestphp/pest": "^3.8.2",
-        "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan-deprecation-rules": "^2.0.3",
-        "phpstan/phpstan-strict-rules": "^2.0.4",
-        "rector/rector": "^2.1.0",
-        "rector/type-perfect": "^2.1.0",
-        "shipmonk/composer-dependency-analyser": "^1.8.3",
-        "spaze/phpstan-disallowed-calls": "^4.5.0",
-        "thecodingmachine/phpstan-safe-rule": "^1.4.1",
-        "ticketswap/phpstan-error-formatter": "^1.1.5",
-        "tomasvotruba/type-coverage": "^2.0.2"
+        "ergebnis/composer-normalize": "^2.57.0",
+        "hosmelq/php-coding-standard": "^1.5.0",
+        "illuminate/database": "^13.42.0",
+        "pestphp/pest": "^5.3.6",
+        "pestphp/pest-plugin-agent": "^5.0.0",
+        "pestphp/pest-plugin-rector": "^5.0.6",
+        "shipmonk/composer-dependency-analyser": "^1.8.4"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -57,16 +53,18 @@
         "sort-packages": true
     },
     "scripts": {
-        "phpstan": "phpstan analyse --configuration=phpstan.neon.dist --memory-limit=4G",
-        "pint": "pint",
+        "ecs": "ecs check --fix",
+        "phpstan": "phpstan analyse --memory-limit=4G",
         "rector": "rector",
-        "test": "pest"
+        "test": "pest",
+        "test-coverage": "pest --coverage"
     },
     "scripts-descriptions": {
-        "phpstan": "Run PHPStan static analysis.",
-        "pint": "Format code using Laravel Pint.",
-        "rector": "Run Rector automated refactoring.",
-        "test": "Run the test suite using Pest."
+        "ecs": "Runs ECS.",
+        "phpstan": "Runs PHPStan analyse.",
+        "rector": "Runs Rector.",
+        "test": "Runs the Pest test suite.",
+        "test-coverage": "Runs the Pest test suite with code coverage."
     },
     "$schema": "https://getcomposer.org/schema.json"
 }

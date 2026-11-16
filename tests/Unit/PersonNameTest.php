@@ -11,9 +11,7 @@ it('requires first name', function (): void {
 it('allows last name to be omitted', function (): void {
     $name = new PersonName('Baz');
 
-    expect($name)
-        ->first->toBe('Baz')
-        ->last->toBeNull();
+    expect($name)->first->toBe('Baz')->last->toBeNull();
 });
 
 it('returns correct full name', function (): void {
@@ -36,10 +34,7 @@ it('returns correct abbreviations', function (): void {
 
     $nameOnly = new PersonName('Baz');
 
-    expect($nameOnly)
-        ->familiar()->toBe('Baz')
-        ->abbreviated()->toBe('Baz')
-        ->sorted()->toBe('Baz');
+    expect($nameOnly)->familiar()->toBe('Baz')->abbreviated()->toBe('Baz')->sorted()->toBe('Baz');
 });
 
 it('returns correct possessive form', function (): void {
@@ -84,9 +79,7 @@ it('returns correct initials', function (): void {
 it('creates person from full name', function (): void {
     $person = PersonName::fromFull('Will St. Clair');
 
-    expect($person)
-        ->first->toBe('Will')
-        ->last->toBe('St. Clair');
+    expect($person)->first->toBe('Will')->last->toBe('St. Clair');
 
     $emptyPerson = PersonName::fromFull('');
 
@@ -96,19 +89,14 @@ it('creates person from full name', function (): void {
 it('handles spaces in full names correctly', function (): void {
     $name = PersonName::fromFull('  Will   St. Clair  ');
 
-    expect($name)
-        ->first->toBe('Will')
-        ->last->toBe('St. Clair')
-        ->full()->toBe('Will St. Clair');
+    expect($name)->first->toBe('Will')->last->toBe('St. Clair')->full()->toBe('Will St. Clair');
 });
 
 it('treats blank last name same as null', function (): void {
     $name = new PersonName('Baz', '');
     $nameWithNull = new PersonName('Baz');
 
-    expect($name)
-        ->full()->toBe($nameWithNull->full())
-        ->last->toBeNull();
+    expect($name)->full()->toBe($nameWithNull->full())->last->toBeNull();
 });
 
 it('compares equality correctly', function (): void {
@@ -116,9 +104,7 @@ it('compares equality correctly', function (): void {
     $name2 = new PersonName('Foo', 'Bar');
     $name3 = new PersonName('Will', 'Bar');
 
-    expect($name1)
-        ->equals($name2)->toBeTrue()
-        ->equals($name3)->toBeFalse();
+    expect($name1)->equals($name2)->toBeTrue()->equals($name3)->toBeFalse();
 });
 
 it('serializes to JSON correctly', function (): void {
@@ -148,9 +134,7 @@ describe('Unicode support', function (): void {
     it('handles Unicode abbreviations', function (): void {
         $name = new PersonName('José', 'García');
 
-        expect($name)
-            ->abbreviated()->toBe('J. García')
-            ->familiar()->toBe('José G.');
+        expect($name)->abbreviated()->toBe('J. García')->familiar()->toBe('José G.');
     });
 
     it('handles Unicode possessive forms', function (): void {

@@ -1,0 +1,51 @@
+name: Pullfrog
+
+run-name: ${{ inputs.name || github.workflow }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: string
+        description: Run name
+      prompt:
+        type: string
+        description: Agent prompt
+
+concurrency:
+  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.run_id }}
+
+permissions:
+  contents: read
+
+env:
+  PHP_VERSION: '8.4'
+
+jobs:
+  pullfrog:
+    name: Pullfrog
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Prepare composer dependencies
+        uses: hosmelq/.github/.github/actions/composer-dependencies@32f4a95b53649f1634b195193a61bb56a6b26d50 # main
+        with:
+          php-tools: ''
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Run agent
+        uses: pullfrog/pullfrog@v0
+        with:
+          prompt: ${{ inputs.prompt }}

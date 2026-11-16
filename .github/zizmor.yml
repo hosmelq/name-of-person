@@ -1,0 +1,18 @@
+rules:
+  forbidden-uses:
+    config:
+      allow:
+        - actions/*
+        - hosmelq/.github/*
+        - nunomaduro/dev-null.sh/*
+        - pullfrog/pullfrog@v0
+        - zizmorcore/zizmor-action
+  ref-version-mismatch:
+    ignore:
+      # dev-null.sh has no tags, so the pinned commit tracks its production branch.
+      - devnull.yml
+  unpinned-uses:
+    config:
+      policies:
+        pullfrog/pullfrog: ref-pin
+        '*': hash-pin

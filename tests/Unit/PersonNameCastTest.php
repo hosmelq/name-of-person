@@ -16,12 +16,11 @@ describe('Casting from database to object', function (): void {
     it('creates PersonName from default columns', function (): void {
         $caster = PersonNameCast::castUsing([]);
         $model = new class () extends Model {};
-
         $name = $caster->get(
             $model,
             'name',
             null,
-            ['first_name' => 'Foo', 'last_name' => 'Bar']
+            ['first_name' => 'Foo', 'last_name' => 'Bar'],
         );
 
         expect($name)
@@ -34,12 +33,11 @@ describe('Casting from database to object', function (): void {
     it('creates PersonName from custom columns', function (): void {
         $caster = PersonNameCast::castUsing(['given_name', 'family_name']);
         $model = new class () extends Model {};
-
         $name = $caster->get(
             $model,
             'name',
             null,
-            ['given_name' => 'Will', 'family_name' => 'St. Clair']
+            ['given_name' => 'Will', 'family_name' => 'St. Clair'],
         );
 
         expect($name)
@@ -51,12 +49,13 @@ describe('Casting from database to object', function (): void {
     it('returns null when first name is missing', function (): void {
         $caster = PersonNameCast::castUsing([]);
         $model = new class () extends Model {};
-
         $nullResult = $caster->get($model, 'name', null, ['last_name' => 'Bar']);
-        $emptyResult = $caster->get($model, 'name', null, ['first_name' => '', 'last_name' => 'Bar']);
+        $emptyResult = $caster->get($model, 'name', null, [
+            'first_name' => '',
+            'last_name' => 'Bar',
+        ]);
 
-        expect($nullResult)->toBeNull()
-            ->and($emptyResult)->toBeNull();
+        expect($nullResult)->toBeNull()->and($emptyResult)->toBeNull();
     });
 });
 
@@ -65,7 +64,6 @@ describe('Casting from object to database', function (): void {
         $caster = PersonNameCast::castUsing([]);
         $model = new class () extends Model {};
         $name = new PersonName('Jason', 'Fried');
-
         $result = $caster->set($model, 'name', $name, []);
 
         expect($result)->toBe([
@@ -77,7 +75,6 @@ describe('Casting from object to database', function (): void {
     it('stores string values to default columns', function (): void {
         $caster = PersonNameCast::castUsing([]);
         $model = new class () extends Model {};
-
         $fullName = $caster->set($model, 'name', 'Will St. Clair', []);
         $singleName = $caster->set($model, 'name', 'Will', []);
         $nullValue = $caster->set($model, 'name', null, []);
@@ -93,7 +90,6 @@ describe('Casting from object to database', function (): void {
         $caster = PersonNameCast::castUsing(['given_name', 'family_name']);
         $model = new class () extends Model {};
         $name = new PersonName('Foo', 'Bar');
-
         $result = $caster->set($model, 'name', $name, []);
 
         expect($result)->toBe([
@@ -107,13 +103,15 @@ describe('Casting from object to database', function (): void {
         $model = new class () extends Model {};
 
         $caster->set($model, 'name', 123, []);
-    })->throws(InvalidArgumentException::class, 'Value must be null, string, or PersonName instance, got: int');
+    })->throws(
+        InvalidArgumentException::class,
+        'Value must be null, string, or PersonName instance, got: int',
+    );
 
     it('preserves data through round trip conversion', function (): void {
         $caster = PersonNameCast::castUsing([]);
         $model = new class () extends Model {};
         $originalName = new PersonName('Foo', 'Bar');
-
         $dbData = $caster->set($model, 'name', $originalName, []);
         $retrievedName = $caster->get($model, 'name', null, $dbData);
 
@@ -155,12 +153,9 @@ describe('Model integration', function (): void {
                 ];
             }
         };
-
         $model->name = 'Jason Fried';
 
-        expect($model)
-            ->first_name->toBe('Jason')
-            ->last_name->toBe('Fried');
+        expect($model)->first_name->toBe('Jason')->last_name->toBe('Fried');
     });
 
     it('handles null assignment via model mutator', function (): void {
@@ -172,11 +167,8 @@ describe('Model integration', function (): void {
                 ];
             }
         };
-
         $model->name = null;
 
-        expect($model)
-            ->first_name->toBeNull()
-            ->last_name->toBeNull();
+        expect($model)->first_name->toBeNull()->last_name->toBeNull();
     });
 });
