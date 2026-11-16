@@ -171,4 +171,31 @@ describe('Model integration', function (): void {
 
         expect($model)->first_name->toBeNull()->last_name->toBeNull();
     });
+
+    it('keeps column changes made after reading the name', function (): void {
+        $model = new class () extends Model {
+            protected $attributes = [
+                'first_name' => 'David',
+                'last_name' => 'Heinemeier Hansson',
+            ];
+
+            protected function casts(): array
+            {
+                return [
+                    'name' => PersonNameCast::class,
+                ];
+            }
+        };
+
+        expect($model->name)->full()->toBe('David Heinemeier Hansson');
+
+        $model->first_name = 'Jason';
+        $model->last_name = 'Fried';
+
+        expect($model->name)->full()->toBe('Jason Fried')
+            ->and($model->getAttributes())->toBe([
+                'first_name' => 'Jason',
+                'last_name' => 'Fried',
+            ]);
+    });
 });

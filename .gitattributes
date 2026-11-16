@@ -9,6 +9,7 @@
 /.gitignore export-ignore
 /CHANGELOG.md export-ignore
 /composer-dependency-analyser.php export-ignore
+/docs export-ignore
 /ecs.php export-ignore
 /phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore

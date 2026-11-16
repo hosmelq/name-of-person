@@ -29,6 +29,8 @@ class PersonNameCast implements Castable
             $config[0] ?? 'first_name',
             $config[1] ?? 'last_name',
         ) implements CastsAttributes {
+            public bool $withoutObjectCaching = true;
+
             public function __construct(
                 protected string $firstNameColumn,
                 protected string $lastNameColumn,

@@ -19,8 +19,13 @@
             "email": "hosmelq@gmail.com"
         }
     ],
+    "homepage": "https://hosmelq.com/docs/name-of-person",
+    "support": {
+        "docs": "https://hosmelq.com/docs/name-of-person"
+    },
     "require": {
         "php": "^8.4",
+        "ext-mbstring": "*",
         "thecodingmachine/safe": "^3.4.0"
     },
     "require-dev": {
@@ -31,6 +36,9 @@
         "pestphp/pest-plugin-agent": "^5.0.0",
         "pestphp/pest-plugin-rector": "^5.0.6",
         "shipmonk/composer-dependency-analyser": "^1.8.4"
+    },
+    "suggest": {
+        "illuminate/database": "Required to cast Eloquent attributes with PersonNameCast."
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
